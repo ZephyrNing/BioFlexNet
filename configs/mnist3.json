@@ -1,0 +1,23 @@
+{
+  "network": "VGG6",
+  "dataset": "mnist",
+  "batch_size": 128,
+  "learning_rate": 0.1,
+  "num_classes": 10,
+  "use_flex": false,
+  "optimizer": "SGD",
+  "logits_mechanism": "THRESHOLD",
+  "masking_mechanism": "SIGMOID_HARD",
+  "logits_use_batchnorm": true,
+  "dropout": 0.3,
+  "in_dimensions": [
+      3,
+      28,
+      28
+  ],
+  "epochs": 120,
+  "spiking": true,
+  "spiking_threshold": 1.0,
+  "spiking_decay": 0.95,
+  "use_stbp": false
+}

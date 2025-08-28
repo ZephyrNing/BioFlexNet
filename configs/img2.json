@@ -1,0 +1,23 @@
+{
+    "network": "VGG16",
+    "dataset": "imagenet100",
+    "batch_size": 256,
+    "learning_rate": 0.1,
+    "num_classes": 100,
+    "use_flex": true,
+    "optimizer": "SGD",
+    "logits_mechanism": "THRESHOLD",
+    "masking_mechanism": "SIGMOID_HARD",
+    "logits_use_batchnorm": true,
+    "dropout": 0.3,
+    "in_dimensions": [
+        3,
+        224,
+        224
+    ],
+    "epochs": 180,
+    "spiking": false,
+    "spiking_threshold": 1.0,
+    "spiking_decay": 0.95,
+    "use_stbp": false
+  }
