@@ -98,11 +98,11 @@ class Flex2D(nn.Module):
         nn.init.kaiming_uniform_(self.threshold)
 
     def forward(self, x):
-        t_flex_pool = self.flex_pool(x)  # 只调用一次
+        t_flex_pool = self.flex_pool(x)  
         t_flex_conv = self.flex_conv(x)
         t_flex_pool = channel_interpolate(t_flex_pool, self.out_channels)
 
-        # 初始化 threshold
+
         if not hasattr(self, "threshold") or self.threshold.shape != t_flex_pool.shape:
             with torch.no_grad():
                 self.threshold = nn.Parameter(torch.randn(1, *t_flex_pool.shape[1:]).to(self.device))
@@ -134,9 +134,7 @@ class Flex2D(nn.Module):
         # -------- calculate logits --------
         match self.config.logits_mechanism:
             case "THRESHOLD":
-                # print("t_flex_pool", t_flex_pool.shape, "threshold", self.threshold.shape)
 
-                # logits = t_flex_pool - self.threshold
                 logits = t_flex_pool - self.threshold 
             case "SpatialAttentionBlock":
                 logits = self.spatial_attention_block(x)
@@ -145,14 +143,14 @@ class Flex2D(nn.Module):
 
         # -------- apply batchnorm --------
         if self.config.logits_use_batchnorm:
-            logits = self.bn_logits(logits)  # this solves the SMOOTHED-SIGMOID-not-learning-at-all problem
+            logits = self.bn_logits(logits) 
 
         return logits
 
     def masking(self, logits):
         match self.config.masking_mechanism:
             case "SIGMOID_MUL":
-                mask = sigmoid_plain(logits * self.config.get("sigmoid_mul_factor"))  # already improved version
+                mask = sigmoid_plain(logits * self.config.get("sigmoid_mul_factor"))
             case "SIGMOID_HARD":
                 mask = HardsigmoidFunc.apply(logits)
             case _:
@@ -168,7 +166,7 @@ class Flex2D(nn.Module):
         return mask
 
     def _monitor_mask(self, mask):
-        with torch.no_grad():  # This block won't be part of the computation graph
+        with torch.no_grad():
             self.homogeneity = measure_homogeneity(mask)
             self.conv_ratio = count_conv_ratio(mask)
             self.homogeneity = 1 if self.config.get("joint_mechanism", False) == "CHANNELWISE_MAXPOOL" else self.homogeneity

@@ -10,20 +10,20 @@ def plot_train_valid_accuracies(run_path):
     run_loader = RunLoader(Path(run_path), whether_load_checkpoint=False)
     logger = run_loader.logger
 
-    # 从 SQLite 数据库中提取表为 DataFrame
-    df = logger.get_dataframe()  # ←←← 这是关键
 
-    # 输出列名供调试
+    df = logger.get_dataframe()
+
+
     print("列名:", df.columns.tolist())
 
-    # 提取各项数据
+
     epochs = df["Epoch"]
     train_acc = df["Train Accuracy"]
     valid_acc = df["Valid Accuracy"]
     train_acc_bal = df["Train Accuracy Balanced"]
     valid_acc_bal = df["Valid Accuracy Balanced"]
 
-    # 可视化
+
     plt.figure(figsize=(10, 6))
     plt.plot(epochs, train_acc, label="Train Accuracy")
     plt.plot(epochs, valid_acc, label="Valid Accuracy")

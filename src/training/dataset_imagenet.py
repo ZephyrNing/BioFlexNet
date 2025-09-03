@@ -14,7 +14,7 @@ class ImageNet100Dataset(Dataset):
         labels_file = self.folder / "Labels.json"
         labels_json = json.load(open(labels_file, "r"))
 
-        # 统一转换成 synset → int
+
         self.class_to_idx = {
             synset: idx for idx, synset in enumerate(sorted(labels_json.keys()))
         }
@@ -38,7 +38,7 @@ class ImageNet100Dataset(Dataset):
             for class_key in os.listdir(path):
                 class_folder = path / class_key
                 if class_folder.is_dir() and class_key in self.class_to_idx:
-                    y = self.class_to_idx[class_key]   # 这里就是 int 了
+                    y = self.class_to_idx[class_key] 
                     for image_name in os.listdir(class_folder):
                         self.image_paths.append(class_folder / image_name)
                         self.image_labels.append(y)

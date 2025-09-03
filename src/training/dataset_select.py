@@ -20,7 +20,7 @@ def get_dataset_obj(dataset_name: str, mode: str):
             return MNISTDataset(mode)
         case "cifar10":
             return Cifar10Dataset(mode)
-        case "cifar10-down-50":  # 10 类，每类 100 张，总 1000
+        case "cifar10-down-50":
             cifar10_train = Cifar10Dataset(mode)
             return create_balanced_subset(cifar10_train, num_classes=10, num_samples_per_class=100)
         case "cifar10-random-small-100":
@@ -33,7 +33,7 @@ def get_dataset_obj(dataset_name: str, mode: str):
             cifar10_train = Cifar10Dataset(mode, gaussian_noise_std=0.5)
             return create_random_subset(cifar10_train, num_samples=100, seed=42)
         case "imagenet100":
-            # ★ 最小改动：固定为你当前服务器的数据路径
+
             data_root = Path("/rds/general/user/zn324/home/Flexible-Neurons-main/data/imagenet100")
             return ImageNet100Dataset(folder=data_root, mode=mode)
         case _:

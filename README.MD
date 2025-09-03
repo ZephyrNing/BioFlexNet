@@ -1,13 +1,14 @@
-# BioFlexNet: Spike-Driven Dynamic Routing for Robust and Biologically-Plausible Computation
+# PlasticFlex: Spike-Driven Dynamic Routing for Robust and Biologically-Plausible Computation
 
-Repository for the SpikingFlexNet project under [Kozlov Lab](https://www.kozlovlab.com/), by Zifan Ning.
+Repository for the PlasticFlex project under [Kozlov Lab](https://www.kozlovlab.com/), by Zifan Ning.
 
-BioFlexNet is a spiking neural network (SNN) framework that integrates dynamic routing via PlasticFlexLayer, enabling context-dependent path switching between selectivity and invariance.
-Built with surrogate gradient training (STBP), BioFlexNet improves optimization stability and enhances adversarial robustness, while maintaining biological plausibility through event-driven, spike-based computation.
+PlasticFlex is a spiking neural network (SNN) framework that integrates dynamic routing via PlasticFlex layer, enabling context-dependent path switching between selectivity and invariance.
+Built with surrogate gradient training, PlasticFlex improves optimization stability and enhances adversarial robustness, while maintaining biological plausibility through event-driven, spike-based computation.
 
 The framework supports both ANN and SNN modes, and provides tools for robustness evaluation (FGSM, PGD attacks) and network visualization, targeting visual recognition tasks such as CIFAR-10 and ImageNet100.
 
 ![framework](public/framework.jpg)
+![flex](public/flex_scheme.gif)
 
 ## Features
 
@@ -20,14 +21,20 @@ The framework supports both ANN and SNN modes, and provides tools for robustness
 
 ## Dataset Support
 
-FlexNet supports a range of standard image classification datasets. Each dataset can be specified via the `"dataset"` field in the configuration file.
+PlasticFlex supports a range of standard and subset image classification datasets.  
+Each dataset can be specified via the `"dataset"` field in the configuration file.
 
-| Dataset      | Num Classes | Images per Class | Num Training Images | Num Validation Images |
-|--------------|-------------|------------------|---------------------|-----------------------|
-| MNIST        | 10          | 7000             | 60000               | 10000                 |
-| CIFAR-10     | 10          | 6000             | 50000               | 10000                 |
-| ImageNet100  | 100         | ~1300            | ~130,000            | ~5,000                |
-| ImageNet1K   | 1000        | ~1300            | 1,281,167           | 50,000                |
+| Dataset                                | Num Classes | Images per Class | Num Training Images | Num Validation Images |
+|----------------------------------------|-------------|------------------|---------------------|-----------------------|
+| MNIST                                  | 10          | 7000             | 60000               | 10000                 |
+| CIFAR-10                               | 10          | 6000             | 50000               | 10000                 |
+| CIFAR-10-Down-50                       | 10          | 100              | 500                 | 500                   |
+| CIFAR-10-Random-Small-100              | 10          | 10               | 100                 | 100                   |
+| CIFAR-10-Random-Small-500              | 10          | 50               | 500                 | 500                   |
+| CIFAR-10-Random-Small-Gaussian-Noise-0.5 | 10        | 50               | 500                 | 500                   |
+| ImageNet100                            | 100         | ~1300            | ~130,000            | ~5,000                |
+| ImageNet1K                             | 1000        | ~1300            | 1,281,167           | 50,000                |
+
 
 ### Notes
 
@@ -44,7 +51,7 @@ FlexNet supports a range of standard image classification datasets. Each dataset
 1. Clone the repository
 
 ```bash 
-git clone git@github.com:AaronInKCL/FlexNet.git
+git clone git@github.com:ZephyrNing/BioFlexNet.git
 ```
 
 2. Install dependencies
@@ -67,7 +74,7 @@ python src/analysis/run_analysis_suite.py --checkpoint_dir checkpoints/cifar10_M
 
 ## Configuration Format
 
-FlexNet uses a JSON-based configuration file to define model architecture, training strategy, and dataset parameters. Below is a minimal example:
+PlasticFlex uses a JSON-based configuration file to define model architecture, training strategy, and dataset parameters. Below is a minimal example:
 
 
 ```json
@@ -163,8 +170,17 @@ python src/analysis/hessian.py --checkpoint_dir <dir>
 **Example plot:**
 ![hessian](public/hessian_spectrum_density.png)
 
+5. Loss Surface Visualization
+Using perturbations along principal directions in parameter space, we generate 2D loss landscapes:
 
-5. Intermediate Representation Visualization
+```bash
+python src/analysis/loss_surface.py --checkpoint_dir <dir>
+```
+
+**Example plot:**
+![loss](public/loss_surface_2.png)
+
+6. Intermediate Representation Visualization
 
 We visualize the internal feature maps of the network across layers.
 
@@ -175,12 +191,3 @@ python src/analysis/intermediate_plot.py --checkpoint_dir <dir>
 **Example plot:**
 ![inte](public/intermediate_representations.png)
 
-6. Loss Surface Visualization
-Using perturbations along principal directions in parameter space, we generate 2D loss landscapes:
-
-```bash
-python src/analysis/loss_surface.py --checkpoint_dir <dir>
-```
-
-**Example plot:**
-![loss](public/loss_surface_2.png)

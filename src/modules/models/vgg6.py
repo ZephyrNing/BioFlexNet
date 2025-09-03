@@ -25,19 +25,18 @@ class VGG6(nn.Module):
         self.fc2 = nn.Linear(self.default_dense_size, self.default_dense_size)
         self.fc3 = nn.Linear(self.default_dense_size, config.get("num_classes"))
 
-        # -------- 获取激活函数 --------
         self.activation = (
             SpikingActivation(surrogate=config.get("use_STBP", False))
             if config.get("spiking", False)
             else nn.ReLU()
         )
 
-        # -------- dimension tracker --------
+
         dimension_tracer = DimensionTracer(config.get("in_dimensions"))
 
-        # -------- dynamic Conv2d --------
+
         class Conv2d(Flex2D if self.config.get("use_flex") else nn.Conv2d):
-            def __init__(conv_self, *args, **kwargs):  # 用 conv_self 避免和外层 self 混淆
+            def __init__(conv_self, *args, **kwargs): 
                 if self.config.get("use_flex"):
                     kwargs["config"] = config
                 super(Conv2d, conv_self).__init__(*args, **kwargs)
@@ -46,12 +45,11 @@ class VGG6(nn.Module):
                 dimension_tracer(**kwargs)
                 conv_self.out_dimensions = dimension_tracer.calculate_dimension()
 
-                # 强制调用初始化
+
                 if self.config.get("use_flex"):
                     conv_self.init_dimension_dependent_modules()
 
 
-        # -------- MaxPool wrapper --------
         class MaxPool2d(nn.MaxPool2d):
             def __init__(self, *args, **kwargs):
                 super().__init__(*args, **kwargs)
@@ -65,7 +63,7 @@ class VGG6(nn.Module):
                 )
                 return self.output
 
-        # -------- features part --------
+
         self.features = nn.Sequential(
             Conv2d(3, 64, 3, padding=1),
             BatchNorm2d(64),

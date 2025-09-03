@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from src.utils.hyperparams.settings import AttrDict
 from src.utils.general import apply_kaiming_initialization
-from src.modules.layers.spike import SpikingActivation  # ✅ 你这行路径可能是 spike 而非 layers.spike
+from src.modules.layers.spike import SpikingActivation 
 
 
 class SimpleConvNet(nn.Module):
@@ -13,7 +13,7 @@ class SimpleConvNet(nn.Module):
         self.conv3 = nn.Conv2d(64, 128, kernel_size=3, padding=1)
         self.conv4 = nn.Conv2d(128, 256, kernel_size=3, padding=1)
         self.pool = nn.MaxPool2d(2, 2)
-        self.fc1 = None  # ✅ 延迟定义
+        self.fc1 = None  
         self.fc2 = nn.Linear(128, 10)
 
         if config.get("spiking", False):
@@ -21,7 +21,7 @@ class SimpleConvNet(nn.Module):
         else:
             self.activation = nn.ReLU()
 
-        # Kaiming 初始化稍后调用（因为 fc1 还没定义）
+
         self.config = config
 
     def forward(self, x):
@@ -31,7 +31,7 @@ class SimpleConvNet(nn.Module):
         x = self.pool(self.activation(self.conv4(x)))
         x = torch.flatten(x, 1)
 
-        # ✅ 第一次 forward 时定义 fc1
+
         if self.fc1 is None:
             in_features = x.shape[1]
             self.fc1 = nn.Linear(in_features, 128).to(x.device)

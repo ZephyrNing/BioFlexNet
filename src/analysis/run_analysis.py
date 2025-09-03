@@ -35,7 +35,7 @@ def visualize_hessian_density(eigen_path, weight_path, save_path):
 
     plt.figure(figsize=(6, 4))
     plt.plot(eigen, weight.real, marker='o', linestyle='-', linewidth=1)
-    plt.yscale('log')  # ← 显示微小差异
+    plt.yscale('log') 
     plt.xlabel("Eigenvalue")
     plt.ylabel("Density (log scale)")
     plt.title("Hessian Spectrum Density")
@@ -48,7 +48,7 @@ def visualize_hessian_density(eigen_path, weight_path, save_path):
 
 def run_analysis(checkpoint_dir: str):
     run_path = Path(checkpoint_dir)
-    run_loader = RunLoader(run_path, whether_load_checkpoint=False)  # 🚨 不让它自动 load
+    run_loader = RunLoader(run_path, whether_load_checkpoint=False)
     results_dir = Path("results") / run_path.name
     results_dir.mkdir(parents=True, exist_ok=True)
 
