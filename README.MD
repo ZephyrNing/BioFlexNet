@@ -180,7 +180,14 @@ python src/analysis/loss_surface.py --checkpoint_dir <dir>
 **Example plot:**
 ![loss](public/loss_surface_2.png)
 
-6. Intermediate Representation Visualization
+6. Interpretability of Flex Routing
+
+We visualize the conv ratio and binariness evolution of each layers.
+
+**Example plot:**
+![ratio](public/image100_VGG16_ANN_FLEX_conv_ratio_dashboard.png)
+
+7. Intermediate Representation Visualization
 
 We visualize the internal feature maps of the network across layers.
 
