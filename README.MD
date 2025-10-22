@@ -124,7 +124,7 @@ Training accuracy and test performance can be aggregated from logs stored under 
 
 **Example plot:**
 
-![Training Accuracy](public/cifar_accuracy_balanced_.png)
+![Training Accuracy](public/cifar_accuracy_balanced.png)
 
 ---
 
